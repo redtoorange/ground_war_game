@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://csufqldgongt0"]
+
+[ext_resource type="Material" uid="uid://b5hxuh1tk3jk" path="res://assets/materials/test_shader.tres" id="1_ibcl5"]
+[ext_resource type="Shader" path="res://assets/shaders/test_shader.gdshader" id="1_y5alo"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_o8nt0"]
+material = ExtResource( "1_ibcl5" )
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w7yci"]
+render_priority = 0
+shader = ExtResource( "1_y5alo" )
+
+[node name="ShaderTestScene" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource( "QuadMesh_o8nt0" )
+surface_material_override/0 = SubResource( "ShaderMaterial_w7yci" )

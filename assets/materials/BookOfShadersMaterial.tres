@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cm1fm5barhja3"]
+
+[ext_resource type="Shader" path="res://assets/shaders/BookOfShaders.gdshader" id="1_6alil"]
+
+[resource]
+shader = ExtResource( "1_6alil" )
