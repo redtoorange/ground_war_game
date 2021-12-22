@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b30j71fiogopv"]
+
+[ext_resource type="Script" path="res://src/game/RTSCameraController.gd" id="1_6jy8k"]
+
+[node name="PlayerController" type="Node2D"]
+script = ExtResource( "1_6jy8k" )
+movement_speed = 100.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+smoothing_enabled = true

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dh2q5wcvacdll"]
+
+[ext_resource type="Script" path="res://src/game/units/Unit.gd" id="1_38v2w"]
+[ext_resource type="Texture2D" uid="uid://d1dpcunth71d4" path="res://assets/sprites/units/soldier.png" id="2_hkvpj"]
+
+[node name="Unit" type="Node2D"]
+script = ExtResource( "1_38v2w" )
+
+[node name="SoldierSprite" type="Sprite2D" parent="."]
+texture = ExtResource( "2_hkvpj" )
+
+[node name="NavigationLine" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(0, 1, 0.156863, 1)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 32.0
+
+[connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_NavigationAgent2D_velocity_computed"]
