@@ -12,7 +12,7 @@ _global_script_classes=[{
 "base": "Node2D",
 "class": &"RTSCameraController",
 "language": &"GDScript",
-"path": "res://src/game/RTSCameraController.gd"
+"path": "res://src/camera/RTSCameraController.gd"
 }]
 _global_script_class_icons={
 "RTSCameraController": ""
@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Ground War"
-run/main_scene="res://scenes/ProcGenTest.tscn"
+run/main_scene="res://scenes/Main.tscn"
 config/icon="res://assets/sprites/icon.png"
 config/features=PackedStringArray("4.0", "Vulkan Clustered")
 

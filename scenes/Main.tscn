@@ -1,9 +1,63 @@
-[gd_scene load_steps=2 format=3 uid="uid://d23aodja1k84l"]
+[gd_scene load_steps=4 format=3 uid="uid://45jr72c144ja"]
 
-[ext_resource type="Texture2D" uid="uid://d0f384ihgmknc" path="res://assets/sprites/icon.png" id="1_0wquf"]
+[ext_resource type="PackedScene" uid="uid://dh2q5wcvacdll" path="res://scenes/game/units/Unit.tscn" id="1_3h1fv"]
+[ext_resource type="Texture2D" uid="uid://biro5hroruw00" path="res://assets/sprites/units/selection_square.png" id="1_c80nw"]
+[ext_resource type="Script" path="res://src/camera/RTSCameraController.gd" id="2_pqnwj"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(498, 308)
-texture = ExtResource( "1_0wquf" )
+[node name="UnitSelectionManager" type="UnitSelectionManager" parent="."]
+
+[node name="BaseUnit" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(20, 48)
+
+[node name="BaseUnit2" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(146, 42)
+
+[node name="BaseUnit3" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(221, 135)
+
+[node name="BaseUnit4" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(-44, 162)
+
+[node name="BaseUnit5" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(88, 159)
+
+[node name="BaseUnit6" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(29, 248)
+
+[node name="BaseUnit7" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+position = Vector2(166, 248)
+
+[node name="SelectionSquareManager" type="SelectionSquareManager" parent="."]
+unit_manager_path = NodePath("../UnitSelectionManager")
+selection_square_path = NodePath("SelectionSquare")
+
+[node name="SelectionSquare" type="NinePatchRect" parent="SelectionSquareManager"]
+visible = false
+offset_left = 40.0
+offset_top = 76.0
+offset_right = 62.0
+offset_bottom = 96.0
+texture = ExtResource( "1_c80nw" )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CameraController" type="Node2D" parent="."]
+position = Vector2(121, 118)
+script = ExtResource( "2_pqnwj" )
+movement_speed = 200.0
+fast_multiplier = 3.0
+
+[node name="Camera2D" type="Camera2D" parent="CameraController"]
+current = true
+smoothing_enabled = true
+smoothing_speed = 10.0
+
+[node name="UnitOrderManager" type="UnitOrderManager" parent="."]
+"Unit Selection Manager" = NodePath("../UnitSelectionManager")

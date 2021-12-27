@@ -1,9 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://b5hxuh1tk3jk"]
-
-[ext_resource type="Shader" path="res://assets/shaders/test_shader.gdshader" id="1_tw0l1"]
-[ext_resource type="Texture2D" uid="uid://d0f384ihgmknc" path="res://assets/sprites/icon.png" id="2_aou2k"]
-
-[resource]
-render_priority = 0
-shader = ExtResource( "1_tw0l1" )
-shader_param/tex = ExtResource( "2_aou2k" )
