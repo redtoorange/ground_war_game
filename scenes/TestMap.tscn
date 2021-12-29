@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/sprites/tiles/tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://scenes/game/units/BaseUnit.tscn" type="PackedScene" id=2]
@@ -10,11 +10,12 @@
 [ext_resource path="res://src/game/buildings/BuildingManager.cs" type="Script" id=8]
 [ext_resource path="res://scenes/game/buildings/BaseBuilding.tscn" type="PackedScene" id=9]
 [ext_resource path="res://src/map/MapController.cs" type="Script" id=10]
+[ext_resource path="res://src/managers/OrderManager.cs" type="Script" id=11]
 
 [node name="TestMap" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="MapController" type="Node" parent="."]
+[node name="MapController" type="Navigation2D" parent="."]
 script = ExtResource( 10 )
 
 [node name="TileMap" type="TileMap" parent="MapController"]
@@ -25,8 +26,42 @@ tile_data = PoolIntArray( -131074, 0, 0, -131073, 0, 0, -196608, 0, 0, -196607, 
 
 [node name="RTSCameraController" parent="." instance=ExtResource( 4 )]
 
-[node name="UnitManager" type="Node" parent="."]
+[node name="BuildingManager" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="BaseBuilding" parent="BuildingManager" instance=ExtResource( 9 )]
+position = Vector2( 301, 496 )
+
+[node name="BaseBuilding2" parent="BuildingManager" instance=ExtResource( 9 )]
+position = Vector2( 729, 110 )
+
+[node name="Managers" type="Node2D" parent="."]
+
+[node name="SelectionManager" type="Node" parent="Managers"]
+script = ExtResource( 6 )
+unitManagerPath = NodePath("../../UnitManager")
+buildingManagerPath = NodePath("../../BuildingManager")
+
+[node name="SelectionSquareController" parent="Managers/SelectionManager" instance=ExtResource( 7 )]
+
+[node name="OrderManager" type="Node2D" parent="Managers"]
+script = ExtResource( 11 )
+selectionManagerPath = NodePath("../SelectionManager")
+
+[node name="UiController" type="Node" parent="."]
+
+[node name="GameUi" type="CanvasLayer" parent="UiController"]
+
+[node name="Control" type="Control" parent="UiController/GameUi"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UnitManager" type="Node2D" parent="."]
 script = ExtResource( 5 )
+navigation2DPath = NodePath("../MapController")
 
 [node name="Unit" parent="UnitManager" instance=ExtResource( 2 )]
 position = Vector2( 665, 269 )
@@ -43,32 +78,4 @@ position = Vector2( 579, 166 )
 [node name="Unit5" parent="UnitManager" instance=ExtResource( 2 )]
 position = Vector2( 611, 390 )
 
-[node name="BuildingManager" type="Node" parent="."]
-script = ExtResource( 8 )
-
-[node name="BaseBuilding" parent="BuildingManager" instance=ExtResource( 9 )]
-position = Vector2( 301, 496 )
-
-[node name="BaseBuilding2" parent="BuildingManager" instance=ExtResource( 9 )]
-position = Vector2( 729, 110 )
-
-[node name="Managers" type="Node" parent="."]
-
-[node name="SelectionManager" type="Node" parent="Managers"]
-script = ExtResource( 6 )
-unitManagerPath = NodePath("../../UnitManager")
-buildingManagerPath = NodePath("../../BuildingManager")
-
-[node name="SelectionSquareController" parent="Managers/SelectionManager" instance=ExtResource( 7 )]
-selecting = null
-
-[node name="UiController" type="Node" parent="."]
-
-[node name="GameUi" type="CanvasLayer" parent="UiController"]
-
-[node name="Control" type="Control" parent="UiController/GameUi"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="UnitNavigationContainer" type="Node2D" parent="UnitManager"]

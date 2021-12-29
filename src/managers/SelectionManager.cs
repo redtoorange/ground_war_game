@@ -78,5 +78,13 @@ namespace GroundWar.managers
 
             selectedBuildings.Clear();
         }
+
+        public bool HasUnitsSelected() => selectedUnits.Count > 0;
+
+        public List<BaseUnit> GetSelectedUnits() => selectedUnits;
+
+        public bool HasBuildingsSelected() => selectedBuildings.Count > 0;
+
+        public List<BaseBuilding> GetSelectedBuildings() => selectedBuildings;
     }
 }

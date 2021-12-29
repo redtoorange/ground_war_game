@@ -1,5 +1,5 @@
 using Godot;
 
-public class MapController : Node
+public class MapController : Navigation2D
 {
 }

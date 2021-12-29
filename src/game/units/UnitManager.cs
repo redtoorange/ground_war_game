@@ -5,11 +5,23 @@ namespace GroundWar.game.units
 {
     public class UnitManager : Node
     {
+        [Export] private NodePath navigation2DPath;
+        private Navigation2D navigation2D;
+
         private List<BaseUnit> allUnits;
+        private Node2D unitNavigationContainer;
 
         public override void _Ready()
         {
+            navigation2D = GetNode<Navigation2D>(navigation2DPath);
+            unitNavigationContainer = GetNode<Node2D>("UnitNavigationContainer");
+            
             GatherAll();
+
+            for (int i = 0; i < allUnits.Count; i++)
+            {
+                allUnits[i].Initialize(navigation2D, unitNavigationContainer);
+            }
         }
 
         public List<BaseUnit> GetAll() => allUnits;

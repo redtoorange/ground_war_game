@@ -1,4 +1,5 @@
 using Godot;
+using GroundWar.game.orders;
 
 namespace GroundWar.game.units
 {
@@ -20,6 +21,11 @@ namespace GroundWar.game.units
         private Sprite hoveredSprite;
         private Area2D area2D;
 
+        private Node2D navigationPathParent;
+        private Navigation2D navigation2D;
+        private UnitOrderHandler unitOrderHandler;
+        private MovementController movementController;
+
         private SelectionState currentSelectionState = SelectionState.UNSELECTED;
         private HoverState currentHoverState = HoverState.UNHOVERED;
 
@@ -28,6 +34,8 @@ namespace GroundWar.game.units
             selectionSprite = GetNode<Sprite>("SelectionSprite");
             hoveredSprite = GetNode<Sprite>("HoveredSprite");
             area2D = GetNode<Area2D>("Area2D");
+            unitOrderHandler = GetNode<UnitOrderHandler>("UnitOrderHandler");
+            movementController = GetNode<MovementController>("MovementController");
 
             selectionSprite.Visible = false;
             hoveredSprite.Visible = false;
@@ -37,6 +45,14 @@ namespace GroundWar.game.units
             area2D.Connect("mouse_exited", this, nameof(OnMouseExited));
         }
 
+        public void Initialize(Navigation2D navigation2D, Node2D navigationPathParent)
+        {
+            this.navigation2D = navigation2D;
+            
+            unitOrderHandler.Initialize(this, movementController);
+            movementController.Initialize(this, navigation2D, navigationPathParent);
+        }
+        
         public void SetSelected(bool selected)
         {
             currentSelectionState = selected ? SelectionState.SELECTED : SelectionState.UNSELECTED;
@@ -72,6 +88,11 @@ namespace GroundWar.game.units
                 selectionSprite.Visible = currentSelectionState == SelectionState.SELECTED;
                 hoveredSprite.Visible = false;
             }
+        }
+
+        public void AddOrder(Order newOrder)
+        {
+            unitOrderHandler.AddOrder(newOrder);
         }
     }
 }
