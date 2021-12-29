@@ -3,4 +3,7 @@
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>GroundWar</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\game\units\player" />
+  </ItemGroup>
 </Project>

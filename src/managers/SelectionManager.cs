@@ -74,47 +74,51 @@ namespace GroundWar.managers
                 ClearBuildings();
             }
 
+            List<BaseUnit> ownedUnits = unitManager.GetAll();
+            List<BaseBuilding> ownedBuildings = buildingManager.GetAll();
+            
             Array overlappingAreas = selectionArea.GetOverlappingAreas();
-            List<BaseUnit> units = new List<BaseUnit>();
-            List<BaseBuilding> buildings = new List<BaseBuilding>();
+            List<BaseUnit> unitsInArea = new List<BaseUnit>();
+            List<BaseBuilding> buildingsInArea = new List<BaseBuilding>();
+
             for (int i = 0; i < overlappingAreas.Count; i++)
             {
                 Area2D n = overlappingAreas[i] as Area2D;
-                if (n.GetParent() is BaseUnit unit)
+                if (n.GetParent() is BaseUnit unit && ownedUnits.Contains(unit))
                 {
-                    units.Add(unit);
+                    unitsInArea.Add(unit);
                 }
-                else if (n.GetParent() is BaseBuilding building)
+                else if (n.GetParent() is BaseBuilding building && ownedBuildings.Contains(building))
                 {
-                    buildings.Add(building);
+                    buildingsInArea.Add(building);
                 }
             }
 
-            if (units.Count > 0)
+            if (unitsInArea.Count > 0)
             {
                 if (selectionType == SelectionType.SINGLE)
                 {
-                    int index = rng.RandiRange(0, units.Count - 1);
+                    int index = rng.RandiRange(0, unitsInArea.Count - 1);
 
                     if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
                     {
-                        if (!selectedUnits.Contains(units[index]))
+                        if (!selectedUnits.Contains(unitsInArea[index]))
                         {
-                            selectedUnits.Add(units[index]);
-                            units[index].SetSelected(true);
+                            selectedUnits.Add(unitsInArea[index]);
+                            unitsInArea[index].SetSelected(true);
                         }
                     }
                     else if (selectionMode == SelectionMode.REMOVE)
                     {
-                        selectedUnits.Remove(units[index]);
-                        units[index].SetSelected(false);
+                        selectedUnits.Remove(unitsInArea[index]);
+                        unitsInArea[index].SetSelected(false);
                     }
                 }
                 else if (selectionType == SelectionType.GROUP)
                 {
-                    for (int u = 0; u < units.Count; u++)
+                    for (int u = 0; u < unitsInArea.Count; u++)
                     {
-                        BaseUnit unit = units[u];
+                        BaseUnit unit = unitsInArea[u];
                         if (unit != null)
                         {
                             if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
@@ -137,30 +141,30 @@ namespace GroundWar.managers
 
 
             // Select Buildings
-            if (selectedUnits.Count == 0 && buildings.Count > 0)
+            if (selectedUnits.Count == 0 && buildingsInArea.Count > 0)
             {
                 if (selectionType == SelectionType.SINGLE)
                 {
-                    int index = rng.RandiRange(0, buildings.Count - 1);
+                    int index = rng.RandiRange(0, buildingsInArea.Count - 1);
                     if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
                     {
-                        if (!selectedBuildings.Contains(buildings[index]))
+                        if (!selectedBuildings.Contains(buildingsInArea[index]))
                         {
-                            selectedBuildings.Add(buildings[index]);
-                            buildings[index].SetSelected(true);
+                            selectedBuildings.Add(buildingsInArea[index]);
+                            buildingsInArea[index].SetSelected(true);
                         }
                     }
                     else if (selectionMode == SelectionMode.REMOVE)
                     {
-                        selectedBuildings.Remove(buildings[index]);
-                        buildings[index].SetSelected(false);
+                        selectedBuildings.Remove(buildingsInArea[index]);
+                        buildingsInArea[index].SetSelected(false);
                     }
                 }
                 else if (selectionType == SelectionType.GROUP)
                 {
-                    for (int u = 0; u < buildings.Count; u++)
+                    for (int u = 0; u < buildingsInArea.Count; u++)
                     {
-                        BaseBuilding building = buildings[u];
+                        BaseBuilding building = buildingsInArea[u];
                         if (building != null)
                         {
                             if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
