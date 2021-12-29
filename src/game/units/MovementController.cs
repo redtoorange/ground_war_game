@@ -3,6 +3,9 @@ using Godot;
 
 namespace GroundWar.game.units
 {
+    /**
+     * MovementController is attached at the Unit Level, and handles the internal logic for the units to move.
+     */
     public class MovementController : Node2D
     {
         [Export] private float acceptanceRange = 5.0f;

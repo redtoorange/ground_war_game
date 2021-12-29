@@ -4,6 +4,10 @@ using GroundWar.game.orders;
 
 namespace GroundWar.game.units
 {
+    /**
+     * UnitOrderHandler is a way of abstractly handling orders given to units, this might be replaced with a more simple
+     * system when soldiers are merged into units.
+     */
     public class UnitOrderHandler : Node
     {
         private Order currentOrder = null;

@@ -6,8 +6,11 @@
 position = Vector2( 514, 303 )
 script = ExtResource( 1 )
 cameraSpeed = 200.0
+zoomSpeed = 25.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 smoothing_enabled = true
 smoothing_speed = 10.0
+
+[node name="Tween" type="Tween" parent="."]

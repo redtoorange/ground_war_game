@@ -3,6 +3,9 @@ using Godot;
 
 namespace GroundWar.game.units
 {
+    /**
+     * The UnitManager is just a Container that holds all the Units for a given player and allows for easy retrieval.
+     */
     public class UnitManager : Node
     {
         [Export] private NodePath navigation2DPath;

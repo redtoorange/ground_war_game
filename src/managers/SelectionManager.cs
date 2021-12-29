@@ -24,8 +24,11 @@ namespace GroundWar.managers
             unitManager = GetNode<UnitManager>(unitManagerPath);
             buildingManager = GetNode<BuildingManager>(buildingManagerPath);
 
+            
             selectionSquareController.Connect("FinishedDragging", this, nameof(OnFinishedDragging));
         }
+        
+        
 
         private void OnFinishedDragging(Rect2 bounds)
         {
