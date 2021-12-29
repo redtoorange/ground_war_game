@@ -2,9 +2,9 @@ using System;
 using Godot;
 using GroundWar.game.orders;
 
-namespace GroundWar.game.units
+namespace GroundWar.game.soldiers
 {
-    public class BaseUnit : Node2D
+    public class BaseSoldier : Node2D
     {
         public Action OnSelected;
         public Action OnDeselected;
@@ -21,13 +21,13 @@ namespace GroundWar.game.units
             HOVERED
         }
 
-        private Sprite unitSprite;
+        private Sprite soldierSprite;
         private Sprite selectionSprite;
         private Sprite hoveredSprite;
         private Area2D area2D;
 
         private Node2D navigationPathParent;
-        private UnitOrderHandler unitOrderHandler;
+        private UnitOrderHandler soldierOrderHandler;
         private MovementController movementController;
 
         private SelectionState currentSelectionState = SelectionState.UNSELECTED;
@@ -35,11 +35,11 @@ namespace GroundWar.game.units
 
         public override void _Ready()
         {
-            unitSprite = GetNode<Sprite>("UnitSprite");
+            soldierSprite = GetNode<Sprite>("SoldierSprite");
             selectionSprite = GetNode<Sprite>("SelectionSprite");
             hoveredSprite = GetNode<Sprite>("HoveredSprite");
             area2D = GetNode<Area2D>("Area2D");
-            unitOrderHandler = GetNode<UnitOrderHandler>("UnitOrderHandler");
+            soldierOrderHandler = GetNode<UnitOrderHandler>("SoldierOrderHandler");
             movementController = GetNode<MovementController>("MovementController");
 
             selectionSprite.Visible = false;
@@ -52,7 +52,7 @@ namespace GroundWar.game.units
 
         public void Initialize(Navigation2D navigation2D, Node2D navigationPathParent)
         {
-            unitOrderHandler.Initialize(this, movementController);
+            soldierOrderHandler.Initialize(this, movementController);
             movementController.Initialize(this, navigation2D, navigationPathParent);
         }
 
@@ -105,12 +105,12 @@ namespace GroundWar.game.units
 
         public void AddOrder(Order newOrder)
         {
-            unitOrderHandler.AddOrder(newOrder);
+            soldierOrderHandler.AddOrder(newOrder);
         }
 
         public void RotateSprite(float angle)
         {
-            unitSprite.Rotation = angle + Mathf.Deg2Rad(90.0f);
+            soldierSprite.Rotation = angle + Mathf.Deg2Rad(90.0f);
         }
 
         public Area2D GetArea()

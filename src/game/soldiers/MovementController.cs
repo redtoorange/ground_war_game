@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Godot;
 
-namespace GroundWar.game.units
+namespace GroundWar.game.soldiers
 {
     /**
      * MovementController is attached at the Unit Level, and handles the internal logic for the units to move.
@@ -13,7 +13,7 @@ namespace GroundWar.game.units
         
         private Line2D movementRenderer;
 
-        private BaseUnit owningUnit;
+        private BaseSoldier owningSoldier;
         private Navigation2D navigation2D;
         private Node2D navigationPathContainer;
         
@@ -23,24 +23,24 @@ namespace GroundWar.game.units
 
         private bool drawPath = false;
         
-        public void Initialize(BaseUnit owningUnit, Navigation2D navigation2D, Node2D navigationPathContainer)
+        public void Initialize(BaseSoldier owningSoldier, Navigation2D navigation2D, Node2D navigationPathContainer)
         {
-            this.owningUnit = owningUnit;
+            this.owningSoldier = owningSoldier;
             this.navigation2D = navigation2D;
             this.navigationPathContainer = navigationPathContainer;
 
             movementRenderer = new Line2D();
             movementRenderer.DefaultColor = Colors.Red;
             movementRenderer.Width = 2.5f;
-            movementRenderer.Name = this.owningUnit.Name + "_PathRenderer";
+            movementRenderer.Name = this.owningSoldier.Name + "_PathRenderer";
             this.navigationPathContainer.AddChild(movementRenderer);
 
-            owningUnit.OnDeselected += () =>
+            owningSoldier.OnDeselected += () =>
             {
                 drawPath = false;
                 movementRenderer.Visible = false;
             };
-            owningUnit.OnSelected += () =>
+            owningSoldier.OnSelected += () =>
             {
                 drawPath = true;
                 movementRenderer.Visible = true;
@@ -57,15 +57,15 @@ namespace GroundWar.game.units
         {
             if (navigationPath != null && navigationPath.Length > 0)
             {
-                owningUnit.Position += movementDirection * speed * delta;
-                float distance = owningUnit.Position.DistanceTo(navigationPath[pathIndex]);
+                owningSoldier.Position += movementDirection * speed * delta;
+                float distance = owningSoldier.Position.DistanceTo(navigationPath[pathIndex]);
                 if (distance < acceptanceRange)
                 {
                     pathIndex += 1;
                     if (pathIndex <= navigationPath.Length - 1)
                     {
-                        movementDirection = (navigationPath[pathIndex] - owningUnit.Position).Normalized();
-                        owningUnit.RotateSprite(movementDirection.Angle());
+                        movementDirection = (navigationPath[pathIndex] - owningSoldier.Position).Normalized();
+                        owningSoldier.RotateSprite(movementDirection.Angle());
                     }
                     else
                     {
@@ -91,14 +91,14 @@ namespace GroundWar.game.units
 
         public void MoveToLocation(Vector2 destination)
         {
-            Vector2[] path = navigation2D.GetSimplePath(owningUnit.Position, destination);
+            Vector2[] path = navigation2D.GetSimplePath(owningSoldier.Position, destination);
            
 
             navigationPath = path;
             pathIndex = 1;
 
-            movementDirection = (navigationPath[pathIndex] - owningUnit.Position).Normalized();
-            owningUnit.RotateSprite(movementDirection.Angle());
+            movementDirection = (navigationPath[pathIndex] - owningSoldier.Position).Normalized();
+            owningSoldier.RotateSprite(movementDirection.Angle());
             UpdateRenderedPath();
         }
 

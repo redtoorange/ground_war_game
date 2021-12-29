@@ -2,7 +2,7 @@
 using Godot;
 using Godot.Collections;
 using GroundWar.game.buildings;
-using GroundWar.game.units;
+using GroundWar.game.soldiers;
 
 namespace GroundWar.managers
 {
@@ -25,7 +25,7 @@ namespace GroundWar.managers
 
         private SelectionSquareController selectionSquareController;
 
-        private List<BaseUnit> selectedUnits = new List<BaseUnit>();
+        private List<BaseSoldier> selectedUnits = new List<BaseSoldier>();
         private List<BaseBuilding> selectedBuildings = new List<BaseBuilding>();
         private RandomNumberGenerator rng = new RandomNumberGenerator();
         private SelectionMode selectionMode = SelectionMode.NORMAL;
@@ -74,17 +74,17 @@ namespace GroundWar.managers
                 ClearBuildings();
             }
 
-            List<BaseUnit> ownedUnits = unitManager.GetAll();
+            List<BaseSoldier> ownedUnits = unitManager.GetAll();
             List<BaseBuilding> ownedBuildings = buildingManager.GetAll();
             
             Array overlappingAreas = selectionArea.GetOverlappingAreas();
-            List<BaseUnit> unitsInArea = new List<BaseUnit>();
+            List<BaseSoldier> unitsInArea = new List<BaseSoldier>();
             List<BaseBuilding> buildingsInArea = new List<BaseBuilding>();
 
             for (int i = 0; i < overlappingAreas.Count; i++)
             {
                 Area2D n = overlappingAreas[i] as Area2D;
-                if (n.GetParent() is BaseUnit unit && ownedUnits.Contains(unit))
+                if (n.GetParent() is BaseSoldier unit && ownedUnits.Contains(unit))
                 {
                     unitsInArea.Add(unit);
                 }
@@ -118,21 +118,21 @@ namespace GroundWar.managers
                 {
                     for (int u = 0; u < unitsInArea.Count; u++)
                     {
-                        BaseUnit unit = unitsInArea[u];
-                        if (unit != null)
+                        BaseSoldier soldier = unitsInArea[u];
+                        if (soldier != null)
                         {
                             if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
                             {
-                                if (!selectedUnits.Contains(unit))
+                                if (!selectedUnits.Contains(soldier))
                                 {
-                                    selectedUnits.Add(unit);
-                                    unit.SetSelected(true);
+                                    selectedUnits.Add(soldier);
+                                    soldier.SetSelected(true);
                                 }
                             }
                             else if (selectionMode == SelectionMode.REMOVE)
                             {
-                                selectedUnits.Remove(unit);
-                                unit.SetSelected(false);
+                                selectedUnits.Remove(soldier);
+                                soldier.SetSelected(false);
                             }
                         }
                     }
@@ -208,7 +208,7 @@ namespace GroundWar.managers
 
         public bool HasUnitsSelected() => selectedUnits.Count > 0;
 
-        public List<BaseUnit> GetSelectedUnits() => selectedUnits;
+        public List<BaseSoldier> GetSelectedUnits() => selectedUnits;
 
         public bool HasBuildingsSelected() => selectedBuildings.Count > 0;
 

@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/game/units/BritishSoldier.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/TestMap.cs" type="Script" id=3]
 [ext_resource path="res://scenes/camera/RTSCameraController.tscn" type="PackedScene" id=4]
-[ext_resource path="res://src/game/units/UnitManager.cs" type="Script" id=5]
+[ext_resource path="res://src/game/soldiers/UnitManager.cs" type="Script" id=5]
 [ext_resource path="res://src/managers/SelectionManager.cs" type="Script" id=6]
 [ext_resource path="res://scenes/ui/SelectionSquareController.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/game/buildings/BuildingManager.cs" type="Script" id=8]
@@ -40,7 +40,7 @@ tile_data = PoolIntArray( -655364, 3, 2, -655363, 3, 3, -655362, 3, 3, -655361, 
 
 [node name="SelectionManager" type="Node" parent="PlayerManagers"]
 script = ExtResource( 6 )
-unitManagerPath = NodePath("../FriendlyUnitManager")
+unitManagerPath = NodePath("../PlayerUnitManager")
 buildingManagerPath = NodePath("../BuildingManager")
 
 [node name="SelectionSquareController" parent="PlayerManagers/SelectionManager" instance=ExtResource( 7 )]
@@ -49,25 +49,25 @@ buildingManagerPath = NodePath("../BuildingManager")
 script = ExtResource( 11 )
 selectionManagerPath = NodePath("../SelectionManager")
 
-[node name="FriendlyUnitManager" type="Node2D" parent="PlayerManagers"]
+[node name="PlayerUnitManager" type="Node2D" parent="PlayerManagers"]
 script = ExtResource( 5 )
 navigation2DPath = NodePath("../../MapController")
 
-[node name="UnitNavigationContainer" type="Node2D" parent="PlayerManagers/FriendlyUnitManager"]
+[node name="UnitNavigationContainer" type="Node2D" parent="PlayerManagers/PlayerUnitManager"]
 
-[node name="BritishSoldier" parent="PlayerManagers/FriendlyUnitManager" instance=ExtResource( 2 )]
+[node name="BritishSoldier" parent="PlayerManagers/PlayerUnitManager" instance=ExtResource( 2 )]
 position = Vector2( 431, 595 )
 
-[node name="BritishSoldier2" parent="PlayerManagers/FriendlyUnitManager" instance=ExtResource( 2 )]
+[node name="BritishSoldier2" parent="PlayerManagers/PlayerUnitManager" instance=ExtResource( 2 )]
 position = Vector2( 488, 595 )
 
-[node name="BritishSoldier3" parent="PlayerManagers/FriendlyUnitManager" instance=ExtResource( 2 )]
+[node name="BritishSoldier3" parent="PlayerManagers/PlayerUnitManager" instance=ExtResource( 2 )]
 position = Vector2( 542, 597 )
 
-[node name="BritishSoldier4" parent="PlayerManagers/FriendlyUnitManager" instance=ExtResource( 2 )]
+[node name="BritishSoldier4" parent="PlayerManagers/PlayerUnitManager" instance=ExtResource( 2 )]
 position = Vector2( 600, 600 )
 
-[node name="BritishSoldier5" parent="PlayerManagers/FriendlyUnitManager" instance=ExtResource( 2 )]
+[node name="BritishSoldier5" parent="PlayerManagers/PlayerUnitManager" instance=ExtResource( 2 )]
 position = Vector2( 651, 599 )
 
 [node name="BuildingManager" type="Node" parent="PlayerManagers"]

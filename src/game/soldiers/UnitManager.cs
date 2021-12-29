@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Godot;
 
-namespace GroundWar.game.units
+namespace GroundWar.game.soldiers
 {
     /**
      * The UnitManager is just a Container that holds all the Units for a given player and allows for easy retrieval.
@@ -11,7 +11,7 @@ namespace GroundWar.game.units
         [Export] private NodePath navigation2DPath;
         private Navigation2D navigation2D;
 
-        private List<BaseUnit> allUnits;
+        private List<BaseSoldier> allUnits;
         private Node2D unitNavigationContainer;
 
         public override void _Ready()
@@ -27,26 +27,26 @@ namespace GroundWar.game.units
             }
         }
 
-        public List<BaseUnit> GetAll() => allUnits;
+        public List<BaseSoldier> GetAll() => allUnits;
 
-        public bool AddUnit(BaseUnit newUnit)
+        public bool AddUnit(BaseSoldier newSoldier)
         {
             bool success = false;
-            if (!allUnits.Contains(newUnit))
+            if (!allUnits.Contains(newSoldier))
             {
-                allUnits.Add(newUnit);
+                allUnits.Add(newSoldier);
                 success = true;
             }
 
             return success;
         }
 
-        public bool RemoveUnit(BaseUnit unit)
+        public bool RemoveUnit(BaseSoldier soldier)
         {
             bool success = false;
-            if (allUnits.Contains(unit))
+            if (allUnits.Contains(soldier))
             {
-                allUnits.Remove(unit);
+                allUnits.Remove(soldier);
                 success = true;
             }
 
@@ -55,14 +55,14 @@ namespace GroundWar.game.units
 
         private void GatherAll()
         {
-            allUnits = new List<BaseUnit>();
+            allUnits = new List<BaseSoldier>();
 
             for (int i = 0; i < GetChildCount(); i++)
             {
-                BaseUnit unit = GetChildOrNull<BaseUnit>(i);
-                if (unit != null)
+                BaseSoldier soldier = GetChildOrNull<BaseSoldier>(i);
+                if (soldier != null)
                 {
-                    allUnits.Add(unit);
+                    allUnits.Add(soldier);
                 }
             }
         }

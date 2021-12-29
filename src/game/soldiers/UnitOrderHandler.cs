@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Godot;
 using GroundWar.game.orders;
 
-namespace GroundWar.game.units
+namespace GroundWar.game.soldiers
 {
     /**
      * UnitOrderHandler is a way of abstractly handling orders given to units, this might be replaced with a more simple
@@ -13,12 +13,12 @@ namespace GroundWar.game.units
         private Order currentOrder = null;
         private Queue<Order> currentOrders = new Queue<Order>();
 
-        private BaseUnit owningUnit;
+        private BaseSoldier owningSoldier;
         private MovementController movementController;
 
-        public void Initialize(BaseUnit owningUnit, MovementController movementController)
+        public void Initialize(BaseSoldier owningSoldier, MovementController movementController)
         {
-            this.owningUnit = owningUnit;
+            this.owningSoldier = owningSoldier;
             this.movementController = movementController;
         }
 
