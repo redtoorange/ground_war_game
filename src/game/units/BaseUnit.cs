@@ -112,5 +112,10 @@ namespace GroundWar.game.units
         {
             unitSprite.Rotation = angle + Mathf.Deg2Rad(90.0f);
         }
+
+        public Area2D GetArea()
+        {
+            return area2D;
+        }
     }
 }

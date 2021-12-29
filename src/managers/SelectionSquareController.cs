@@ -2,20 +2,37 @@ using Godot;
 
 namespace GroundWar.managers
 {
+    public enum SelectionType
+    {
+        SINGLE,
+        GROUP
+    }
+
     public class SelectionSquareController : Node2D
     {
-        [Signal] public delegate void FinishedDragging(Rect2 rect);
+        [Signal] public delegate void FinishedDragging(Rect2 selectionRect, Area2D selectionArea,
+            SelectionType selectionType);
+
+        [Export] private float selectionShowThreshold = 5.0f;
 
         private NinePatchRect selectionSquare;
         private Vector2 rectPosition;
         private Vector2 rectSize;
         private Vector2 startMousePosition;
         private Vector2 currentMousePosition;
-        [Export] private bool selecting = false;
+        private bool selecting = false;
+        private SelectionType currentSelectionType = SelectionType.SINGLE;
+
+        private Area2D area2D;
+        private RectangleShape2D collisionShape;
 
         public override void _Ready()
         {
             selectionSquare = GetNode<NinePatchRect>("SelectionSquare");
+            area2D = GetNode<Area2D>("SelectionSquare/Area2D");
+
+            CollisionShape2D coll = GetNode<CollisionShape2D>("SelectionSquare/Area2D/CollisionShape2D");
+            collisionShape = coll.Shape as RectangleShape2D;
         }
 
         public override void _Process(float delta)
@@ -24,6 +41,13 @@ namespace GroundWar.managers
             {
                 currentMousePosition = GetGlobalMousePosition();
                 UpdateRectExtents();
+                if (!selectionSquare.Visible && rectSize.Length() >= selectionShowThreshold)
+                {
+                    currentSelectionType = SelectionType.GROUP;
+                    ShowSquare();
+                }
+
+                UpdateCollisionArea();
             }
         }
 
@@ -42,18 +66,24 @@ namespace GroundWar.managers
         {
             if (mouseEvent.Pressed)
             {
+                currentSelectionType = SelectionType.SINGLE;
                 startMousePosition = GetGlobalMousePosition();
                 currentMousePosition = startMousePosition;
                 UpdateRectExtents();
                 selecting = true;
-                selectionSquare.Visible = true;
             }
             else
             {
+                EmitSignal(nameof(FinishedDragging), new Rect2(rectPosition, rectSize), area2D, currentSelectionType);
+
                 selectionSquare.Visible = false;
                 selecting = false;
-                EmitSignal(nameof(FinishedDragging), new Rect2(rectPosition, rectSize));
             }
+        }
+
+        private void ShowSquare()
+        {
+            selectionSquare.Visible = true;
         }
 
         private void UpdateRectExtents()
@@ -84,6 +114,14 @@ namespace GroundWar.managers
 
             selectionSquare.RectPosition = rectPosition;
             selectionSquare.RectSize = rectSize;
+        }
+
+        private void UpdateCollisionArea()
+        {
+            Vector2 halfSize = rectSize / 2.0f;
+
+            area2D.GlobalPosition = rectPosition + halfSize;
+            collisionShape.Extents = halfSize;
         }
     }
 }
