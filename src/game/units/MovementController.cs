@@ -18,6 +18,7 @@ namespace GroundWar.game.units
         private int pathIndex;
         private Vector2 movementDirection;
 
+        private bool drawPath = false;
         
         public void Initialize(BaseUnit owningUnit, Navigation2D navigation2D, Node2D navigationPathContainer)
         {
@@ -30,11 +31,24 @@ namespace GroundWar.game.units
             movementRenderer.Width = 2.5f;
             movementRenderer.Name = this.owningUnit.Name + "_PathRenderer";
             this.navigationPathContainer.AddChild(movementRenderer);
+
+            owningUnit.OnDeselected += () =>
+            {
+                drawPath = false;
+                movementRenderer.Visible = false;
+            };
+            owningUnit.OnSelected += () =>
+            {
+                drawPath = true;
+                movementRenderer.Visible = true;
+                UpdateRenderedPath();
+            };
         }
         
         public override void _Ready()
         {
         }
+        
 
         public override void _Process(float delta)
         {
@@ -48,23 +62,31 @@ namespace GroundWar.game.units
                     if (pathIndex <= navigationPath.Length - 1)
                     {
                         movementDirection = (navigationPath[pathIndex] - owningUnit.Position).Normalized();
+                        owningUnit.RotateSprite(movementDirection.Angle());
                     }
                     else
                     {
                         navigationPath = null;
                     }
-                    UpdateRenderedPath();
+
+                    if (drawPath)
+                    {
+                        UpdateRenderedPath();
+                    }
                 }
                 else
                 {
-                    Vector2[] points = movementRenderer.Points;
-                    points[0] = GlobalPosition;
-                    movementRenderer.Points = points;
+                    if (drawPath)
+                    {
+                        Vector2[] points = movementRenderer.Points;
+                        points[0] = GlobalPosition;
+                        movementRenderer.Points = points;
+                    }
                 }
             }
         }
 
-        public void DrawPath(Vector2 destination)
+        public void MoveToLocation(Vector2 destination)
         {
             Vector2[] path = navigation2D.GetSimplePath(owningUnit.Position, destination);
            
@@ -73,6 +95,7 @@ namespace GroundWar.game.units
             pathIndex = 1;
 
             movementDirection = (navigationPath[pathIndex] - owningUnit.Position).Normalized();
+            owningUnit.RotateSprite(movementDirection.Angle());
             UpdateRenderedPath();
         }
 

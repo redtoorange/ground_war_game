@@ -60,7 +60,7 @@ namespace GroundWar.game.units
 
         private void HandleMoveOrder(MoveOrder moveOrder)
         {
-            movementController.DrawPath(moveOrder.destination);
+            movementController.MoveToLocation(moveOrder.destination);
         }
     }
 }

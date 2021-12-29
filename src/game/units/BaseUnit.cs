@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using GroundWar.game.orders;
 
@@ -5,6 +6,9 @@ namespace GroundWar.game.units
 {
     public class BaseUnit : Node2D
     {
+        public Action OnSelected;
+        public Action OnDeselected;
+
         enum SelectionState
         {
             UNSELECTED,
@@ -17,12 +21,12 @@ namespace GroundWar.game.units
             HOVERED
         }
 
+        private Sprite unitSprite;
         private Sprite selectionSprite;
         private Sprite hoveredSprite;
         private Area2D area2D;
 
         private Node2D navigationPathParent;
-        private Navigation2D navigation2D;
         private UnitOrderHandler unitOrderHandler;
         private MovementController movementController;
 
@@ -31,6 +35,7 @@ namespace GroundWar.game.units
 
         public override void _Ready()
         {
+            unitSprite = GetNode<Sprite>("UnitSprite");
             selectionSprite = GetNode<Sprite>("SelectionSprite");
             hoveredSprite = GetNode<Sprite>("HoveredSprite");
             area2D = GetNode<Area2D>("Area2D");
@@ -47,15 +52,23 @@ namespace GroundWar.game.units
 
         public void Initialize(Navigation2D navigation2D, Node2D navigationPathParent)
         {
-            this.navigation2D = navigation2D;
-            
             unitOrderHandler.Initialize(this, movementController);
             movementController.Initialize(this, navigation2D, navigationPathParent);
         }
-        
+
         public void SetSelected(bool selected)
         {
-            currentSelectionState = selected ? SelectionState.SELECTED : SelectionState.UNSELECTED;
+            if (currentSelectionState != SelectionState.SELECTED && selected)
+            {
+                currentSelectionState = SelectionState.SELECTED;
+                OnSelected?.Invoke();
+            }
+            else if (currentSelectionState != SelectionState.UNSELECTED && !selected)
+            {
+                currentSelectionState = SelectionState.UNSELECTED;
+                OnDeselected?.Invoke();
+            }
+
             UpdateOverlays();
         }
 
@@ -93,6 +106,11 @@ namespace GroundWar.game.units
         public void AddOrder(Order newOrder)
         {
             unitOrderHandler.AddOrder(newOrder);
+        }
+
+        public void RotateSprite(float angle)
+        {
+            unitSprite.Rotation = angle + Mathf.Deg2Rad(90.0f);
         }
     }
 }
