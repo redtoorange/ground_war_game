@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://b08dg0kh5ngx0"]
+
+[ext_resource type="Script" path="res://scenes/testing/MainUnit.gd" id="1_13vhs"]
+[ext_resource type="PackedScene" uid="uid://dy66eivpai8n7" path="res://scenes/testing/PathPoint.tscn" id="2_wxtkx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_87kjt"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8oq0t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sr6mg"]
+albedo_color = Color(1, 0.262745, 0.317647, 1)
+
+[node name="MainUnit" type="CharacterBody3D"]
+script = ExtResource( "1_13vhs" )
+movement_speed = 1.0
+path_point_prefab = ExtResource( "2_wxtkx" )
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource( "CapsuleShape3D_87kjt" )
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource( "CapsuleMesh_8oq0t" )
+surface_material_override/0 = SubResource( "StandardMaterial3D_sr6mg" )
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+target_desired_distance = 2.0
+agent_height_offset = -0.5
+
+[connection signal="input_event" from="." to="." method="_on_clicked"]
+[connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_NavigationAgent3D_navigation_finished"]
+[connection signal="path_changed" from="NavigationAgent3D" to="." method="_on_NavigationAgent3D_path_changed"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_velocity_computed"]

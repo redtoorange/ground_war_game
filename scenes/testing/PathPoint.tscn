@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dy66eivpai8n7"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_dj8oi"]
+radius = 0.25
+height = 0.5
+radial_segments = 16
+rings = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilje1"]
+albedo_color = Color(0.811765, 1, 0.878431, 1)
+
+[node name="PathPoint" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource( "SphereMesh_dj8oi" )
+surface_material_override/0 = SubResource( "StandardMaterial3D_ilje1" )

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://devnin5chcssw"]
+
+[ext_resource type="Texture2D" uid="uid://dglgmxerfmbp1" path="res://assets/sprites/buildings/test_building.png" id="1_gedx1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cad4m"]
+size = Vector2(60, 58)
+
+[node name="BaseBuilding" type="BaseBuilding"]
+
+[node name="BuildingSprite" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource( "1_gedx1" )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(9.53674e-07, -1)
+shape = SubResource( "RectangleShape2D_cad4m" )

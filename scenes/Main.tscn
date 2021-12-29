@@ -1,39 +1,57 @@
-[gd_scene load_steps=4 format=3 uid="uid://45jr72c144ja"]
+[gd_scene load_steps=5 format=3 uid="uid://wgoc01fka7mp"]
 
 [ext_resource type="PackedScene" uid="uid://dh2q5wcvacdll" path="res://scenes/game/units/Unit.tscn" id="1_3h1fv"]
 [ext_resource type="Texture2D" uid="uid://biro5hroruw00" path="res://assets/sprites/units/selection_square.png" id="1_c80nw"]
-[ext_resource type="Script" path="res://src/camera/RTSCameraController.gd" id="2_pqnwj"]
+[ext_resource type="PackedScene" uid="uid://devnin5chcssw" path="res://scenes/game/buildings/BaseBuilding.tscn" id="1_yatgb"]
+[ext_resource type="PackedScene" uid="uid://cs54pdgpvgqbr" path="res://scenes/ui/GameUi.tscn" id="5_vjm55"]
 
 [node name="Main" type="Node2D"]
 
-[node name="UnitSelectionManager" type="UnitSelectionManager" parent="."]
+[node name="BuildingController" type="Node2D" parent="."]
 
-[node name="BaseUnit" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseBuilding" parent="BuildingController" instance=ExtResource( "1_yatgb" )]
+position = Vector2(59, -46)
+
+[node name="UnitController" type="Node2D" parent="."]
+
+[node name="BaseUnit" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(20, 48)
 
-[node name="BaseUnit2" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseUnit2" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(146, 42)
 
-[node name="BaseUnit3" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseUnit3" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(221, 135)
 
-[node name="BaseUnit4" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseUnit4" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(-44, 162)
 
-[node name="BaseUnit5" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseUnit5" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(88, 159)
 
-[node name="BaseUnit6" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseUnit6" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(29, 248)
 
-[node name="BaseUnit7" parent="UnitSelectionManager" instance=ExtResource( "1_3h1fv" )]
+[node name="BaseUnit7" parent="UnitController" instance=ExtResource( "1_3h1fv" )]
 position = Vector2(166, 248)
 
-[node name="SelectionSquareManager" type="SelectionSquareManager" parent="."]
-unit_manager_path = NodePath("../UnitSelectionManager")
+[node name="CameraController" type="RtsCameraController" parent="."]
+position = Vector2(121, 118)
+
+[node name="Camera2D" type="Camera2D" parent="CameraController"]
+current = true
+smoothing_enabled = true
+smoothing_speed = 10.0
+
+[node name="ManagerController" type="Node" parent="."]
+
+[node name="UnitSelectionManager" type="UnitSelectionManager" parent="ManagerController"]
+path_selection_square = NodePath("SelectionSquareManager")
+
+[node name="SelectionSquareManager" type="SelectionSquareManager" parent="ManagerController/UnitSelectionManager"]
 selection_square_path = NodePath("SelectionSquare")
 
-[node name="SelectionSquare" type="NinePatchRect" parent="SelectionSquareManager"]
+[node name="SelectionSquare" type="NinePatchRect" parent="ManagerController/UnitSelectionManager/SelectionSquareManager"]
 visible = false
 offset_left = 40.0
 offset_top = 76.0
@@ -48,16 +66,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CameraController" type="Node2D" parent="."]
-position = Vector2(121, 118)
-script = ExtResource( "2_pqnwj" )
-movement_speed = 200.0
-fast_multiplier = 3.0
+[node name="UnitOrderManager" type="UnitOrderManager" parent="ManagerController"]
 
-[node name="Camera2D" type="Camera2D" parent="CameraController"]
-current = true
-smoothing_enabled = true
-smoothing_speed = 10.0
-
-[node name="UnitOrderManager" type="UnitOrderManager" parent="."]
-"Unit Selection Manager" = NodePath("../UnitSelectionManager")
+[node name="GameUi" parent="." instance=ExtResource( "5_vjm55" )]
