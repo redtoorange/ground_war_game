@@ -78,4 +78,19 @@ position = Vector2( 579, 166 )
 [node name="Unit5" parent="UnitManager" instance=ExtResource( 2 )]
 position = Vector2( 611, 390 )
 
+[node name="Unit6" parent="UnitManager" instance=ExtResource( 2 )]
+position = Vector2( 535, 408 )
+
+[node name="Unit7" parent="UnitManager" instance=ExtResource( 2 )]
+position = Vector2( 487, 345 )
+
+[node name="Unit8" parent="UnitManager" instance=ExtResource( 2 )]
+position = Vector2( 616, 212 )
+
+[node name="Unit9" parent="UnitManager" instance=ExtResource( 2 )]
+position = Vector2( 637, 152 )
+
+[node name="Unit10" parent="UnitManager" instance=ExtResource( 2 )]
+position = Vector2( 684, 205 )
+
 [node name="UnitNavigationContainer" type="Node2D" parent="UnitManager"]

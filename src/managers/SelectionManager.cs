@@ -6,6 +6,13 @@ using GroundWar.game.units;
 
 namespace GroundWar.managers
 {
+    enum SelectionMode
+    {
+        NORMAL,
+        ADD,
+        REMOVE
+    }
+
     public class SelectionManager : Node
     {
         [Export] private float selectionAreaThreshold = 5.0f;
@@ -21,6 +28,7 @@ namespace GroundWar.managers
         private List<BaseUnit> selectedUnits = new List<BaseUnit>();
         private List<BaseBuilding> selectedBuildings = new List<BaseBuilding>();
         private RandomNumberGenerator rng = new RandomNumberGenerator();
+        private SelectionMode selectionMode = SelectionMode.NORMAL;
 
         public override void _Ready()
         {
@@ -34,11 +42,37 @@ namespace GroundWar.managers
             rng.Randomize();
         }
 
+        public override void _Input(InputEvent @event)
+        {
+            if (@event is InputEventKey keyEvent)
+            {
+                if (keyEvent.IsActionPressed("selection_add"))
+                {
+                    selectionMode = SelectionMode.ADD;
+                }
+                else if (keyEvent.IsActionReleased("selection_add"))
+                {
+                    selectionMode = SelectionMode.NORMAL;
+                }
+                else if (keyEvent.IsActionPressed("selection_remove"))
+                {
+                    selectionMode = SelectionMode.REMOVE;
+                }
+                else if (keyEvent.IsActionReleased("selection_remove"))
+                {
+                    selectionMode = SelectionMode.NORMAL;
+                }
+            }
+        }
+
 
         private void OnFinishedDragging(Rect2 selectionRect, Area2D selectionArea, SelectionType selectionType)
         {
-            ClearUnits();
-            ClearBuildings();
+            if (selectionMode == SelectionMode.NORMAL)
+            {
+                ClearUnits();
+                ClearBuildings();
+            }
 
             Array overlappingAreas = selectionArea.GetOverlappingAreas();
             List<BaseUnit> units = new List<BaseUnit>();
@@ -61,8 +95,20 @@ namespace GroundWar.managers
                 if (selectionType == SelectionType.SINGLE)
                 {
                     int index = rng.RandiRange(0, units.Count - 1);
-                    selectedUnits.Add(units[index]);
-                    units[index].SetSelected(true);
+
+                    if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
+                    {
+                        if (!selectedUnits.Contains(units[index]))
+                        {
+                            selectedUnits.Add(units[index]);
+                            units[index].SetSelected(true);
+                        }
+                    }
+                    else if (selectionMode == SelectionMode.REMOVE)
+                    {
+                        selectedUnits.Remove(units[index]);
+                        units[index].SetSelected(false);
+                    }
                 }
                 else if (selectionType == SelectionType.GROUP)
                 {
@@ -71,8 +117,19 @@ namespace GroundWar.managers
                         BaseUnit unit = units[u];
                         if (unit != null)
                         {
-                            selectedUnits.Add(unit);
-                            unit.SetSelected(true);
+                            if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
+                            {
+                                if (!selectedUnits.Contains(unit))
+                                {
+                                    selectedUnits.Add(unit);
+                                    unit.SetSelected(true);
+                                }
+                            }
+                            else if (selectionMode == SelectionMode.REMOVE)
+                            {
+                                selectedUnits.Remove(unit);
+                                unit.SetSelected(false);
+                            }
                         }
                     }
                 }
@@ -85,8 +142,19 @@ namespace GroundWar.managers
                 if (selectionType == SelectionType.SINGLE)
                 {
                     int index = rng.RandiRange(0, buildings.Count - 1);
-                    selectedBuildings.Add(buildings[index]);
-                    buildings[index].SetSelected(true);
+                    if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
+                    {
+                        if (!selectedBuildings.Contains(buildings[index]))
+                        {
+                            selectedBuildings.Add(buildings[index]);
+                            buildings[index].SetSelected(true);
+                        }
+                    }
+                    else if (selectionMode == SelectionMode.REMOVE)
+                    {
+                        selectedBuildings.Remove(buildings[index]);
+                        buildings[index].SetSelected(false);
+                    }
                 }
                 else if (selectionType == SelectionType.GROUP)
                 {
@@ -95,8 +163,19 @@ namespace GroundWar.managers
                         BaseBuilding building = buildings[u];
                         if (building != null)
                         {
-                            selectedBuildings.Add(building);
-                            building.SetSelected(true);
+                            if (selectionMode == SelectionMode.ADD || selectionMode == SelectionMode.NORMAL)
+                            {
+                                if (!selectedBuildings.Contains(building))
+                                {
+                                    selectedBuildings.Add(building);
+                                    building.SetSelected(true);
+                                }
+                            }
+                            else if (selectionMode == SelectionMode.REMOVE)
+                            {
+                                selectedBuildings.Remove(building);
+                                building.SetSelected(false);
+                            }
                         }
                     }
                 }
